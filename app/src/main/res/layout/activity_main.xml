@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="250dp"
+        app:srcCompat="@drawable/dual_screen" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="66dp"
+        app:srcCompat="@drawable/w" />
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="66dp"
+        app:srcCompat="@drawable/y" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="66dp"
+        app:srcCompat="@drawable/u" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="220dp"
+        android:layout_marginBottom="66dp"
+        app:srcCompat="@drawable/t" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="290dp"
+        android:layout_marginBottom="66dp"
+        app:srcCompat="@drawable/r" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="150dp"
+        app:srcCompat="@drawable/q" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="150dp"
+        app:srcCompat="@drawable/i" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="150dp"
+        android:layout_marginBottom="150dp"
+        app:srcCompat="@drawable/e" />
+    <ImageView
+        android:layout_width="370dp"
+        android:layout_height="360dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/front_screen_bg"/>
+
+    <ImageView
+        android:id="@+id/backImage"
+        android:layout_width="310dp"
+        android:layout_height="310dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="90dp"
+        app:srcCompat="@drawable/y"/>
+
+
+    <com.example.dualflash.Draw2D
+        android:id="@+id/Draw2D"
+        android:layout_width="350dp"
+        android:layout_height="310dp"
+        android:layout_gravity="top|center"
+        android:layout_marginTop="90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ImageView
+        android:layout_width="360dp"
+        android:layout_height="440dp"
+        app:layout_anchorGravity="top"
+        android:layout_marginTop="-17dp"
+        android:layout_marginStart="0dp"
+        app:srcCompat="@drawable/flip"/>
+
+
+    <ImageButton
+        android:id="@+id/eraser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="-300dp"
+        android:layout_marginBottom="-10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_bg"
+        app:srcCompat="@drawable/erase" />
+
+
+    <ImageButton
+        android:id="@+id/undo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="-190dp"
+        android:layout_marginBottom="-10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_bg"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/undo" />
+
+    <ImageView
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-100dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/rc"/>
+
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sliderCol"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="-100dp"
+        android:layout_gravity="center"
+
+        app:labelBehavior="gone"
+        app:thumbColor="#ffffff"
+        app:thumbStrokeWidth ="0dp"
+        app:flow_horizontalStyle="packed"
+        app:trackHeight = "10dp"
+        app:trackColor="@android:color/transparent"
+
+        app:haloRadius = "0dp"
+
+
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+
+
+        />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sliderSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="-180dp"
+        android:layout_gravity="center"
+
+        app:thumbStrokeWidth="0dp"
+        app:labelBehavior="gone"
+        app:thumbColor="#ffffff"
+        app:flow_horizontalStyle="packed"
+        app:trackHeight = "10dp"
+
+        app:haloRadius = "0dp"
+
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

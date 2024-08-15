@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <dimen android:name="mtrl_slider_track_side_padding">0dp</dimen>
+</selector>
