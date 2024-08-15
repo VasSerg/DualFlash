@@ -1,7 +1,6 @@
 package com.example.dualflash
 
 
-import android.R.attr.path
 import android.content.Context
 import android.content.pm.ActivityInfo
 import android.content.res.ColorStateList
@@ -11,7 +10,6 @@ import android.graphics.Color
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.RectF
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -63,13 +61,10 @@ import kotlin.math.pow
     private lateinit var binding: ActivityMainBinding
 
     private val presentOperation = WindowAreaCapability.Operation.OPERATION_PRESENT_ON_AREA
-    private val logTag = "ConcurrentDisplays"
     //</editor-fold>
 
 
     var ind = 1
-    var bufferPath = ArrayList<Path>(drawData.pathList)
-    var bufferPaint = ArrayList<Paint>(drawData.paintList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.setFlags(
@@ -516,14 +511,13 @@ class Draw2DFlip @JvmOverloads constructor(
 ): View(context, attrs, defStyle){
     override fun onDraw(canvas: Canvas) {
         for (i in drawData.pathList.indices) {
-            var ptoff = Path(drawData.pathList[i])
+            val ptoff = Path(drawData.pathList[i])
 
             val scaleMatrix = Matrix()
-            val rectF = RectF()
             scaleMatrix.setScale(0.6968f, 0.7045f, 20f,920f)
             ptoff.transform(scaleMatrix)
 
-            var paioff = Paint(drawData.paintList[i])
+            val paioff = Paint(drawData.paintList[i])
             paioff.strokeWidth *= 0.7f
 
             canvas.drawPath(ptoff, paioff)
