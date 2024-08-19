@@ -43,6 +43,12 @@ android {
 dependencies {
     implementation("androidx.window:window:1.2.0")
     implementation(libs.androidx.core.ktx)
+    implementation("androidx.activity:activity-ktx:1.8.0")
+
+    implementation(libs.com.github.bumptech.glide.glide3)
+    annotationProcessor(libs.compiler)
+
+    implementation(libs.accompanist.drawablepainter)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)

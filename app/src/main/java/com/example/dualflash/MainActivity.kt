@@ -1,15 +1,24 @@
 package com.example.dualflash
 
 
+import android.annotation.SuppressLint
+import android.app.ActionBar.LayoutParams
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.ImageDecoder
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.drawable.AnimatedImageDrawable
+import android.graphics.drawable.Drawable
+import android.media.Image
+import android.net.Uri
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -18,6 +27,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
@@ -31,9 +41,12 @@ import androidx.window.area.WindowAreaPresentationSessionCallback
 import androidx.window.area.WindowAreaSession
 import androidx.window.area.WindowAreaSessionPresenter
 import androidx.window.core.ExperimentalWindowApi
+import com.bumptech.glide.Glide
 import com.example.dualflash.databinding.ActivityMainBinding
+import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.android.material.slider.Slider
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -57,11 +70,11 @@ import kotlin.math.pow
     private val rearDisplayOperation = WindowAreaCapability.Operation.OPERATION_TRANSFER_ACTIVITY_TO_AREA
 
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     private val presentOperation = WindowAreaCapability.Operation.OPERATION_PRESENT_ON_AREA
     //</editor-fold>
+
 
 
     var ind = 1
@@ -86,6 +99,16 @@ import kotlin.math.pow
         binding.fab.setOnClickListener {
             toggleDualScreenMode()
         }
+
+
+        binding.fabphoto.setOnClickListener {
+            setImage()
+        }
+
+        binding.fabdelphoto.setOnClickListener {
+            DelImage()
+        }
+
 
         val imgfront: ImageView = findViewById(R.id.backImage)
 
@@ -246,170 +269,226 @@ import kotlin.math.pow
 }
 
 
+    fun toggleDualScreenMode() {
+       if (windowAreaSession != null) {
+           windowAreaSession?.close()
+       }
+       else{
+           windowAreaInfo?.token?.let { token ->
+               windowAreaController.presentContentOnWindowArea(
+                   token = token,
+                   activity = this,
+                   executor = displayExecutor,
+                   windowAreaPresentationSessionCallback = this
+               )}
+       }
+    }
 
-fun toggleDualScreenMode() {
-   if (windowAreaSession != null) {
-       windowAreaSession?.close()
-   }
-   else{
-       windowAreaInfo?.token?.let { token ->
-           windowAreaController.presentContentOnWindowArea(
-               token = token,
-               activity = this,
-               executor = displayExecutor,
-               windowAreaPresentationSessionCallback = this
-           )}
-   }
+    override fun onSessionStarted(session: WindowAreaSessionPresenter) {
+
+
+        val imgfront: ImageView = binding.root.findViewById(R.id.backImage)
+
+        windowAreaSession = session
+
+        val ltInflater = layoutInflater
+
+        val view = ltInflater.inflate(R.layout.small_main, null, false)
+        session.setContentView(view)
+
+        drawData.DF.add(view.findViewById(R.id.Draw2DFlip))
+
+
+        drawData.DF[0].invalidate()
+
+
+        val img: ImageView = view.findViewById(R.id.mainImage)
+
+
+        //<editor-fold desc="set image">
+        if (ind == 0){
+            img.setImageResource(R.drawable.w)
+            imgfront.setImageResource(R.drawable.w)
+        }
+        if (ind == 1){
+            img.setImageResource(R.drawable.y)
+            imgfront.setImageResource(R.drawable.y)
+        }
+        if (ind == 2){
+            img.setImageResource(R.drawable.u)
+            imgfront.setImageResource(R.drawable.u)
+        }
+        if (ind == 3){
+            img.setImageResource(R.drawable.t)
+            imgfront.setImageResource(R.drawable.t)
+        }
+        if (ind == 4){
+            img.setImageResource(R.drawable.r)
+            imgfront.setImageResource(R.drawable.r)
+        }
+        if (ind == 5){
+            img.setImageResource(R.drawable.q)
+            imgfront.setImageResource(R.drawable.q)
+        }
+        if (ind == 6){
+            img.setImageResource(R.drawable.i)
+            imgfront.setImageResource(R.drawable.i)
+        }
+        if (ind == 7){
+            img.setImageResource(R.drawable.e)
+            imgfront.setImageResource(R.drawable.e)
+        }
+        //</editor-fold>
+
+        val galImgMain: ImageView = findViewById(R.id.GalImage)
+
+        val galImg: ImageView = view.findViewById(R.id.GalImageFlip)
+        PhotoPicker.FrontImage = galImg
+        val frontBg: ImageView = view.findViewById(R.id.BgGalFront)
+        PhotoPicker.FrontBg = frontBg
+
+        if (PhotoPicker.Show) {
+            frontBg.setImageResource(R.drawable.bg_dark)
+            Glide.with(this).load(PhotoPicker.ImgUri).into(galImgMain)
+            Glide.with(this).load(PhotoPicker.ImgUri).into(galImg)
+        }
+
+        //<editor-fold desc="buttons">
+        binding.fab0.setOnClickListener {
+            img.setImageResource(R.drawable.w)
+            imgfront.setImageResource(R.drawable.w)
+        }
+        binding.fab1.setOnClickListener{
+            img.setImageResource(R.drawable.y)
+            imgfront.setImageResource(R.drawable.y)
+        }
+        binding.fab2.setOnClickListener{
+            img.setImageResource(R.drawable.u)
+            imgfront.setImageResource(R.drawable.u)
+        }
+        binding.fab3.setOnClickListener{
+            img.setImageResource(R.drawable.t)
+            imgfront.setImageResource(R.drawable.t)
+        }
+        binding.fab4.setOnClickListener{
+            img.setImageResource(R.drawable.r)
+            imgfront.setImageResource(R.drawable.r)
+        }
+        binding.fab5.setOnClickListener{
+            img.setImageResource(R.drawable.q)
+            imgfront.setImageResource(R.drawable.q)
+        }
+        binding.fab6.setOnClickListener{
+           img.setImageResource(R.drawable.i)
+           imgfront.setImageResource(R.drawable.i)
+        }
+        binding.fab7.setOnClickListener{
+           img.setImageResource(R.drawable.e)
+           imgfront.setImageResource(R.drawable.e)
+        }
+        //</editor-fold>
+
+    }
+
+
+
+    override fun onSessionEnded(t: Throwable?)                {
+       windowAreaSession = null
+
+        drawData.DF.clear()
+
+        val imgfront: ImageView = findViewById(R.id.backImage)
+        //<editor-fold desc="buttons">
+        binding.fab0.setOnClickListener {
+            ind = 0
+            imgfront.setImageResource(R.drawable.w)
+        }
+        binding.fab1.setOnClickListener {
+            ind = 1
+            imgfront.setImageResource(R.drawable.y)
+        }
+
+        binding.fab2.setOnClickListener {
+            ind = 2
+            imgfront.setImageResource(R.drawable.u)
+        }
+        binding.fab3.setOnClickListener {
+            ind = 3
+            imgfront.setImageResource(R.drawable.t)
+        }
+        binding.fab4.setOnClickListener {
+            ind = 4
+            imgfront.setImageResource(R.drawable.r)
+        }
+        binding.fab5.setOnClickListener {
+            ind = 5
+            imgfront.setImageResource(R.drawable.q)
+        }
+        binding.fab6.setOnClickListener {
+            ind = 6
+            imgfront.setImageResource(R.drawable.i)
+        }
+        binding.fab7.setOnClickListener {
+            ind = 7
+            imgfront.setImageResource(R.drawable.e)
+        }
+        //</editor-fold>
+
+       if(t != null) {
+           Log.e("2", "Something was broken: ${t.message}")
+       }
+    }
+
+    override fun onContainerVisibilityChanged(isVisible: Boolean) {
+       Log.d("nigga", "onContainerVisibilityChanged. isVisible = $isVisible")
+    }
+
+    //create launcher for getimage activity
+    var Launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // There are no request codes
+            if (result.data != null){
+                val uri = result.data!!.data
+
+                PhotoPicker.Show = true
+                val imgGal: ImageView = findViewById(R.id.GalImage)
+
+                Glide.with(this).load(uri).into(imgGal)
+                PhotoPicker.FrontImage?.let { Glide.with(this).load(uri).into(it) }
+
+                PhotoPicker.ImgUri = uri
+
+                val BgImg: ImageView = findViewById(R.id.BgGal)
+                BgImg.setImageResource(R.drawable.bg_dark)
+                PhotoPicker.FrontBg?.setImageResource(R.drawable.bg_dark)
+
+            }
+        }
+    }
+
+
+    fun setImage() {
+        val i = Intent()
+        i.setType("image/*")
+        i.setAction(Intent.ACTION_GET_CONTENT)
+
+        Launcher.launch(Intent.createChooser(i, "Select Picture"))
+
+    }
+
+    fun DelImage(){
+        PhotoPicker.Show = false
+        val imgGal: ImageView = findViewById(R.id.GalImage)
+        imgGal.setImageResource(R.drawable.blank)
+        PhotoPicker.FrontImage?.setImageResource(R.drawable.blank)
+
+        PhotoPicker.ImgUri = null
+
+        val BgImg: ImageView = findViewById(R.id.BgGal)
+        BgImg.setImageResource(R.drawable.blank)
+        PhotoPicker.FrontBg?.setImageResource(R.drawable.blank)
+    }
 }
-
-override fun onSessionStarted(session: WindowAreaSessionPresenter) {
-
-
-    val imgfront: ImageView = binding.root.findViewById(R.id.backImage)
-
-    windowAreaSession = session
-
-    val ltInflater = layoutInflater
-
-    val view = ltInflater.inflate(R.layout.small_main, null, false)
-    session.setContentView(view)
-
-    drawData.DF.add(view.findViewById(R.id.Draw2DFlip))
-
-
-    drawData.DF[0].invalidate()
-
-    val img: ImageView = view.findViewById(R.id.mainImage)
-
-
-
-    //<editor-fold desc="set image">
-    if (ind == 0){
-        img.setImageResource(R.drawable.w)
-        imgfront.setImageResource(R.drawable.w)
-    }
-    if (ind == 1){
-        img.setImageResource(R.drawable.y)
-        imgfront.setImageResource(R.drawable.y)
-    }
-    if (ind == 2){
-        img.setImageResource(R.drawable.u)
-        imgfront.setImageResource(R.drawable.u)
-    }
-    if (ind == 3){
-        img.setImageResource(R.drawable.t)
-        imgfront.setImageResource(R.drawable.t)
-    }
-    if (ind == 4){
-        img.setImageResource(R.drawable.r)
-        imgfront.setImageResource(R.drawable.r)
-    }
-    if (ind == 5){
-        img.setImageResource(R.drawable.q)
-        imgfront.setImageResource(R.drawable.q)
-    }
-    if (ind == 6){
-        img.setImageResource(R.drawable.i)
-        imgfront.setImageResource(R.drawable.i)
-    }
-    if (ind == 7){
-        img.setImageResource(R.drawable.e)
-        imgfront.setImageResource(R.drawable.e)
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="buttons">
-    binding.fab0.setOnClickListener {
-        img.setImageResource(R.drawable.w)
-        imgfront.setImageResource(R.drawable.w)
-    }
-    binding.fab1.setOnClickListener{
-        img.setImageResource(R.drawable.y)
-        imgfront.setImageResource(R.drawable.y)
-    }
-    binding.fab2.setOnClickListener{
-        img.setImageResource(R.drawable.u)
-        imgfront.setImageResource(R.drawable.u)
-    }
-    binding.fab3.setOnClickListener{
-        img.setImageResource(R.drawable.t)
-        imgfront.setImageResource(R.drawable.t)
-    }
-    binding.fab4.setOnClickListener{
-        img.setImageResource(R.drawable.r)
-        imgfront.setImageResource(R.drawable.r)
-    }
-    binding.fab5.setOnClickListener{
-        img.setImageResource(R.drawable.q)
-        imgfront.setImageResource(R.drawable.q)
-    }
-    binding.fab6.setOnClickListener{
-       img.setImageResource(R.drawable.i)
-       imgfront.setImageResource(R.drawable.i)
-    }
-    binding.fab7.setOnClickListener{
-       img.setImageResource(R.drawable.e)
-       imgfront.setImageResource(R.drawable.e)
-    }
-    //</editor-fold>
-
-}
-
-
-
-override fun onSessionEnded(t: Throwable?)                {
-   windowAreaSession = null
-
-    drawData.DF.clear()
-
-    val imgfront: ImageView = findViewById(R.id.backImage)
-    //<editor-fold desc="buttons">
-    binding.fab0.setOnClickListener {
-        ind = 0
-        imgfront.setImageResource(R.drawable.w)
-    }
-    binding.fab1.setOnClickListener {
-        ind = 1
-        imgfront.setImageResource(R.drawable.y)
-    }
-
-    binding.fab2.setOnClickListener {
-        ind = 2
-        imgfront.setImageResource(R.drawable.u)
-    }
-    binding.fab3.setOnClickListener {
-        ind = 3
-        imgfront.setImageResource(R.drawable.t)
-    }
-    binding.fab4.setOnClickListener {
-        ind = 4
-        imgfront.setImageResource(R.drawable.r)
-    }
-    binding.fab5.setOnClickListener {
-        ind = 5
-        imgfront.setImageResource(R.drawable.q)
-    }
-    binding.fab6.setOnClickListener {
-        ind = 6
-        imgfront.setImageResource(R.drawable.i)
-    }
-    binding.fab7.setOnClickListener {
-        ind = 7
-        imgfront.setImageResource(R.drawable.e)
-    }
-    //</editor-fold>
-
-   if(t != null) {
-       Log.e("2", "Something was broken: ${t.message}")
-   }
-}
-
-override fun onContainerVisibilityChanged(isVisible: Boolean) {
-   Log.d("nigga", "onContainerVisibilityChanged. isVisible = $isVisible")
-}
-
-}
-
 
 object drawData {
     var pathList = ArrayList<Path>()
@@ -417,6 +496,13 @@ object drawData {
     var DF = ArrayList<Draw2DFlip>()
 }
 
+@SuppressLint("StaticFieldLeak")
+object PhotoPicker {
+    var Show = false
+    var ImgUri: Uri? = null
+    var FrontImage: ImageView? = null
+    var FrontBg: ImageView? = null
+}
 
 
 class Draw2D @JvmOverloads constructor(
@@ -525,3 +611,5 @@ class Draw2DFlip @JvmOverloads constructor(
         }
     }
 }
+
+
