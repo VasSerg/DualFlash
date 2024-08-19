@@ -12,7 +12,7 @@ android {
         minSdk = 34
         targetSdk = 34
         versionCode = 1
-        versionName = "0.4"
+        versionName = "0.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,9 +41,9 @@ android {
 }
 
 dependencies {
-    implementation("androidx.window:window:1.2.0")
+    implementation(libs.androidx.window)
     implementation(libs.androidx.core.ktx)
-    implementation("androidx.activity:activity-ktx:1.8.0")
+    implementation(libs.androidx.activity.ktx)
 
     implementation(libs.com.github.bumptech.glide.glide3)
     annotationProcessor(libs.compiler)

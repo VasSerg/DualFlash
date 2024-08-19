@@ -2,7 +2,6 @@ package com.example.dualflash
 
 
 import android.annotation.SuppressLint
-import android.app.ActionBar.LayoutParams
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -11,13 +10,9 @@ import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.ImageDecoder
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Path
-import android.graphics.drawable.AnimatedImageDrawable
-import android.graphics.drawable.Drawable
-import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.util.AttributeSet
@@ -33,7 +28,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.window.area.WindowAreaCapability
 import androidx.window.area.WindowAreaController
 import androidx.window.area.WindowAreaInfo
@@ -43,10 +37,8 @@ import androidx.window.area.WindowAreaSessionPresenter
 import androidx.window.core.ExperimentalWindowApi
 import com.bumptech.glide.Glide
 import com.example.dualflash.databinding.ActivityMainBinding
-import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import com.google.android.material.slider.Slider
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -66,8 +58,8 @@ import kotlin.math.pow
     private var capabilityStatus: WindowAreaCapability.Status =
         WindowAreaCapability.Status.WINDOW_AREA_STATUS_UNSUPPORTED
 
-    private val dualScreenOperation = WindowAreaCapability.Operation.OPERATION_PRESENT_ON_AREA
-    private val rearDisplayOperation = WindowAreaCapability.Operation.OPERATION_TRANSFER_ACTIVITY_TO_AREA
+    //private val dualScreenOperation = WindowAreaCapability.Operation.OPERATION_PRESENT_ON_AREA
+    //private val rearDisplayOperation = WindowAreaCapability.Operation.OPERATION_TRANSFER_ACTIVITY_TO_AREA
 
 
     private lateinit var binding: ActivityMainBinding
@@ -77,8 +69,9 @@ import kotlin.math.pow
 
 
 
-    var ind = 1
+    private var ind = 1
 
+    @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -92,7 +85,7 @@ import kotlin.math.pow
         setContentView(binding.root)
 
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
 
         // button to press
@@ -106,7 +99,7 @@ import kotlin.math.pow
         }
 
         binding.fabdelphoto.setOnClickListener {
-            DelImage()
+            delImage()
         }
 
 
@@ -201,8 +194,8 @@ import kotlin.math.pow
     }
 
     eraseBtn.setOnClickListener {
-        drawData.pathList.clear()
-        drawData.paintList.clear()
+        DrawData.pathList.clear()
+        DrawData.paintList.clear()
         mDrawLayout.invalidate()
     }
 
@@ -210,8 +203,8 @@ import kotlin.math.pow
 
     sliderBtn.value = 10/20f
 
-    sliderBtn.addOnChangeListener { slider, value, fromUser ->
-        mDrawLayout.STROKE_WIDTH = sliderBtn.value*20
+    sliderBtn.addOnChangeListener { _, _, _ ->
+        mDrawLayout.strokeWidth = sliderBtn.value*20
     }
 
     sliderColBtn.value = 0.0778f
@@ -226,7 +219,7 @@ import kotlin.math.pow
     sliderColBtn.thumbTintList = myList
 
 
-    sliderColBtn.addOnChangeListener { slider, value, fromUser ->
+    sliderColBtn.addOnChangeListener { _, _, _ ->
         val men = 100000
         val k = 0.53248
         val rag = 16.0.pow(4.0)
@@ -256,20 +249,20 @@ import kotlin.math.pow
             mDrawLayout.paintColor = ((2*(normalize * - rag + 0 ).toInt()- 16.0.pow(5.0).toInt()*15)*0.99999-20).toInt()
         }
 
-        val states = arrayOf(
+        val statess = arrayOf(
             intArrayOf(android.R.attr.state_enabled), // enabled
             intArrayOf(-android.R.attr.state_enabled) // disabled
         )
-        val colors = intArrayOf(mDrawLayout.paintColor,mDrawLayout.paintColor)
-        val myList = ColorStateList(states, colors)
-        sliderColBtn.thumbTintList = myList
+        val colorss = intArrayOf(mDrawLayout.paintColor,mDrawLayout.paintColor)
+        val myListt = ColorStateList(statess, colorss)
+        sliderColBtn.thumbTintList = myListt
 
     }
     //</editor-fold>
 }
 
 
-    fun toggleDualScreenMode() {
+    private fun toggleDualScreenMode() {
        if (windowAreaSession != null) {
            windowAreaSession?.close()
        }
@@ -284,6 +277,7 @@ import kotlin.math.pow
        }
     }
 
+    @SuppressLint("InflateParams")
     override fun onSessionStarted(session: WindowAreaSessionPresenter) {
 
 
@@ -296,10 +290,10 @@ import kotlin.math.pow
         val view = ltInflater.inflate(R.layout.small_main, null, false)
         session.setContentView(view)
 
-        drawData.DF.add(view.findViewById(R.id.Draw2DFlip))
+        DrawData.DF.add(view.findViewById(R.id.Draw2DFlip))
 
 
-        drawData.DF[0].invalidate()
+        DrawData.DF[0].invalidate()
 
 
         val img: ImageView = view.findViewById(R.id.mainImage)
@@ -395,7 +389,7 @@ import kotlin.math.pow
     override fun onSessionEnded(t: Throwable?)                {
        windowAreaSession = null
 
-        drawData.DF.clear()
+        DrawData.DF.clear()
 
         val imgfront: ImageView = findViewById(R.id.backImage)
         //<editor-fold desc="buttons">
@@ -443,8 +437,8 @@ import kotlin.math.pow
        Log.d("nigga", "onContainerVisibilityChanged. isVisible = $isVisible")
     }
 
-    //create launcher for getimage activity
-    var Launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    //create launcher for getImage() activity
+    private var launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             // There are no request codes
             if (result.data != null){
@@ -458,8 +452,8 @@ import kotlin.math.pow
 
                 PhotoPicker.ImgUri = uri
 
-                val BgImg: ImageView = findViewById(R.id.BgGal)
-                BgImg.setImageResource(R.drawable.bg_dark)
+                val bgImg: ImageView = findViewById(R.id.BgGal)
+                bgImg.setImageResource(R.drawable.bg_dark)
                 PhotoPicker.FrontBg?.setImageResource(R.drawable.bg_dark)
 
             }
@@ -467,16 +461,16 @@ import kotlin.math.pow
     }
 
 
-    fun setImage() {
+    private fun setImage() {
         val i = Intent()
         i.setType("image/*")
         i.setAction(Intent.ACTION_GET_CONTENT)
 
-        Launcher.launch(Intent.createChooser(i, "Select Picture"))
+        launcher.launch(Intent.createChooser(i, "Select Picture"))
 
     }
 
-    fun DelImage(){
+    private fun delImage(){
         PhotoPicker.Show = false
         val imgGal: ImageView = findViewById(R.id.GalImage)
         imgGal.setImageResource(R.drawable.blank)
@@ -484,13 +478,13 @@ import kotlin.math.pow
 
         PhotoPicker.ImgUri = null
 
-        val BgImg: ImageView = findViewById(R.id.BgGal)
-        BgImg.setImageResource(R.drawable.blank)
+        val bgImg: ImageView = findViewById(R.id.BgGal)
+        bgImg.setImageResource(R.drawable.blank)
         PhotoPicker.FrontBg?.setImageResource(R.drawable.blank)
     }
 }
 
-object drawData {
+object DrawData {
     var pathList = ArrayList<Path>()
     var paintList = ArrayList<Paint>()
     var DF = ArrayList<Draw2DFlip>()
@@ -517,27 +511,27 @@ class Draw2D @JvmOverloads constructor(
     private var drawPaint = Paint()
     private var canvasPaint = Paint()
     var paintColor = -120787
-    var STROKE_WIDTH = 10f
-    var drawCanvas = Canvas()
-    var canvasBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+    var strokeWidth = 10f
+    private var drawCanvas = Canvas()
+    private var canvasBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
 
 
     fun undo() {
-        if (drawData.pathList.size != 0){
-            drawData.pathList.removeLast()
-            drawData.paintList.removeLast()
+        if (DrawData.pathList.size != 0){
+            DrawData.pathList.removeLast()
+            DrawData.paintList.removeLast()
             invalidate()
         }
     }
 
     private fun setPencil() {
         drawPath = Path()
-        drawData.pathList.add(drawPath)
+        DrawData.pathList.add(drawPath)
         drawPaint = Paint()
-        drawData.paintList.add(drawPaint)
+        DrawData.paintList.add(drawPaint)
         drawPaint.color = paintColor
         drawPaint.isAntiAlias = true
-        drawPaint.strokeWidth = STROKE_WIDTH
+        drawPaint.strokeWidth = strokeWidth
         drawPaint.style = Paint.Style.STROKE
         drawPaint.strokeJoin = Paint.Join.ROUND
         drawPaint.strokeCap = Paint.Cap.ROUND
@@ -547,19 +541,20 @@ class Draw2D @JvmOverloads constructor(
     //************************************   draw view  *************************************************************
     override fun onDraw(canvas: Canvas) {
         canvas.drawBitmap(canvasBitmap, 0f, 0f, canvasPaint)
-        for (i in drawData.pathList.indices) {
-            canvas.drawPath(drawData.pathList[i], drawData.paintList[i])
+        for (i in DrawData.pathList.indices) {
+            canvas.drawPath(DrawData.pathList[i], DrawData.paintList[i])
             //Log.e("nigger", i.toString())
         }
-        Log.e("nigger",drawData.DF.toString())
-        if (drawData.DF.size != 0){
-            drawData.DF[0].invalidate()
+        Log.e("nigger",DrawData.DF.toString())
+        if (DrawData.DF.size != 0){
+            DrawData.DF[0].invalidate()
         }
 
     }
 
 
     //***************************   respond to touch interaction   **************************************************
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         canvasPaint.color = paintColor
         val touchX = event.x
@@ -595,15 +590,19 @@ class Draw2DFlip @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyle: Int = 0
 ): View(context, attrs, defStyle){
+    @SuppressLint("DrawAllocation")
     override fun onDraw(canvas: Canvas) {
-        for (i in drawData.pathList.indices) {
-            val ptoff = Path(drawData.pathList[i])
+        var ptoff: Path
+        var scaleMatrix: Matrix
+        var paioff: Paint
+        for (i in DrawData.pathList.indices) {
+            ptoff = Path(DrawData.pathList[i])
 
-            val scaleMatrix = Matrix()
+            scaleMatrix = Matrix()
             scaleMatrix.setScale(0.6968f, 0.7045f, 20f,920f)
             ptoff.transform(scaleMatrix)
 
-            val paioff = Paint(drawData.paintList[i])
+            paioff = Paint(DrawData.paintList[i])
             paioff.strokeWidth *= 0.7f
 
             canvas.drawPath(ptoff, paioff)

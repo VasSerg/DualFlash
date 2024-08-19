@@ -18,7 +18,8 @@
         android:layout_marginBottom="250dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/dual_screen" />
+        app:srcCompat="@drawable/dual_screen"
+        tools:ignore="ContentDescription" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -30,7 +31,8 @@
         android:layout_marginBottom="410dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/photo" />
+        app:srcCompat="@drawable/photo"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabdelphoto"
@@ -41,7 +43,8 @@
         android:layout_marginBottom="410dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/hide_image" />
+        app:srcCompat="@drawable/hide_image"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab0"
@@ -52,7 +55,8 @@
         android:layout_marginBottom="66dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/w" />
+        app:srcCompat="@drawable/w"
+        tools:ignore="ContentDescription" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -64,7 +68,8 @@
         android:layout_marginBottom="66dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/y" />
+        app:srcCompat="@drawable/y"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab2"
@@ -75,7 +80,8 @@
         android:layout_marginBottom="66dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/u" />
+        app:srcCompat="@drawable/u"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab3"
@@ -86,7 +92,8 @@
         android:layout_marginBottom="66dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/t" />
+        app:srcCompat="@drawable/t"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab4"
@@ -97,7 +104,8 @@
         android:layout_marginBottom="66dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/r" />
+        app:srcCompat="@drawable/r"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab5"
@@ -108,7 +116,8 @@
         android:layout_marginBottom="150dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/q" />
+        app:srcCompat="@drawable/q"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab6"
@@ -119,7 +128,8 @@
         android:layout_marginBottom="150dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/i" />
+        app:srcCompat="@drawable/i"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab7"
@@ -130,7 +140,8 @@
         android:layout_marginBottom="150dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/e" />
+        app:srcCompat="@drawable/e"
+        tools:ignore="ContentDescription" />
     <ImageView
         android:id="@+id/Bgimg"
         android:layout_width="370dp"
@@ -138,7 +149,8 @@
         android:layout_marginTop="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/bg_light"/>
+        app:srcCompat="@drawable/bg_light"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/backImage"
@@ -146,7 +158,8 @@
         android:layout_height="310dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="90dp"
-        app:srcCompat="@drawable/y"/>
+        app:srcCompat="@drawable/y"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/BgGal"
@@ -155,7 +168,8 @@
         android:layout_marginTop="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/blank"/>
+        app:srcCompat="@drawable/blank"
+        tools:ignore="ContentDescription" />
 
 
 
@@ -166,7 +180,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="90dp"
         android:src="@drawable/blank"
-        />
+        tools:ignore="ContentDescription" />
 
 
     <com.example.dualflash.Draw2D
@@ -183,7 +197,8 @@
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
-        app:srcCompat="@drawable/bg_black"/>
+        app:srcCompat="@drawable/bg_black"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:layout_width="370dp"
@@ -191,7 +206,8 @@
         app:layout_anchorGravity="top"
         android:layout_marginTop="-33dp"
         android:layout_marginStart="0dp"
-        app:srcCompat="@drawable/flip"/>
+        app:srcCompat="@drawable/flip"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/eraser"
@@ -202,7 +218,8 @@
         android:layout_marginBottom="410dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/erase" />
+        app:srcCompat="@drawable/erase"
+        tools:ignore="ContentDescription" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -214,7 +231,8 @@
         android:layout_marginBottom="410dp"
 
         app:maxImageSize="40dp"
-        app:srcCompat="@drawable/undo" />
+        app:srcCompat="@drawable/undo"
+        tools:ignore="ContentDescription" />
 
 
     <ImageView
@@ -222,7 +240,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="-100dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/rc"/>
+        app:srcCompat="@drawable/rc"
+        tools:ignore="ContentDescription" />
 
 
     <com.google.android.material.slider.Slider

@@ -12,7 +12,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/bg_light"/>
+        app:srcCompat="@drawable/bg_light"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/mainImage"
@@ -22,7 +23,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/y" />
+        app:srcCompat="@drawable/y"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/BgGalFront"
@@ -30,7 +32,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/blank"/>
+        app:srcCompat="@drawable/blank"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/GalImageFlip"
@@ -39,7 +42,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        app:srcCompat="@drawable/blank"/>
+        app:srcCompat="@drawable/blank"
+        tools:ignore="ContentDescription" />
 
     <com.example.dualflash.Draw2DFlip
         android:id="@+id/Draw2DFlip"

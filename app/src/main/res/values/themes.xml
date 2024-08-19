@@ -5,5 +5,5 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Dualflash" parent="Base.Theme.Dualflash" />
+    <style name="Theme.Dualflash" parent="Base.Theme.Dualflash" ></style>
 </resources>
