@@ -4,4 +4,4 @@ This app allows to use both screens at one time while phone is unfolded. It send
 The app is customized only for sizes of Samsung Z Flip 5, but also should work for other foldable devices. However, the layout issues shure will be present.  
 Code is written in Android Studio on kotlin, because the only official example of dualscreen usage is given on that language.
   
-## You can download the app in releases page: https://github.com/VasSerg/DualFlash/releases/tag/v0.45
+## You can download the app in releases page: https://github.com/VasSerg/DualFlash/releases/tag/v0.5
